@@ -1549,6 +1549,9 @@ class Magmi_ProductImportEngine extends Magmi_Engine
 		$this->log("MAGMI by dweeves - version:".Magmi_Version::$version,"title");
 		$this->log("Import Profile:$this->_profile","startup");
 		$this->log("Import Mode:$this->mode","startup");
+		if ($this->getProp("GLOBAL","commit","yes") !== "yes") {
+			$this->log("Not committing to database (no changes will be made)","startup");
+		}
 		$this->log("step:".$this->getProp("GLOBAL","step",0.5)."%","step");
 		//intialize store id cache
 		$this->connectToMagento();
@@ -1619,7 +1622,12 @@ class Magmi_ProductImportEngine extends Magmi_Engine
 				if($importedok)
 				{
 					$res["ok"]=true;
-					$this->commitTransaction();
+					$commit = $this->getProp("GLOBAL","commit","yes");
+					if ($commit === "yes") {
+						$this->commitTransaction();
+					} else {
+						$this->rollbackTransaction();
+					}
 				}
 				else
 				{
@@ -1669,6 +1677,9 @@ class Magmi_ProductImportEngine extends Magmi_Engine
 		
 		$this->log("Import Profile:$this->_profile","startup");
 		$this->log("Import Mode:$this->mode","startup");
+		if ($this->getProp("GLOBAL","commit","yes") !== "yes") {
+			$this->log("Not committing to database (no changes will be made)","startup");
+		}
 		$this->log("step:".$this->getProp("GLOBAL","step",0.5)."%","step");
 		$this->createPlugins($this->_profile,$params);
 		$this->datasource=$this->getDataSource();

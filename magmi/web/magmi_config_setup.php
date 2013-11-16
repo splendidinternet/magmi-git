@@ -229,6 +229,14 @@ $cansock=true;
 		<li class="label">File permissions:</li>
 		<li class="value"><input type="text" name="GLOBAL:filemask" size="3" value="<?php echo $conf->get("GLOBAL","filemask","644")?>"></input></li>
 	</ul>
+	<ul class="formline" id="commit">
+		<li class="label">Commit transactions:</li>
+		<li class="value"><select name="GLOBAL:commit">
+			<?php foreach(array("yes", "no") as $opt){?>
+				<option value="<?php echo $opt?>" <?php if($conf->get("GLOBAL","commit")==$opt){?>selected=selected<?php }?>><?php echo $opt?></option>
+			<?php }?>
+		</select></li>
+	</ul>
 
 	</div>
 <div class="clear"></div>
